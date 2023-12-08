@@ -14,7 +14,7 @@ def index():
 
 
 @bp.route('/test')
-def index():
+def index2():
     return '''
     <!-- #######  THIS IS A COMMENT - Visible only in the source editor #########-->
     <h2>Welcome To The Best Online HTML Web Editor!</h2>
