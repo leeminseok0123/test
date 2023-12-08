@@ -222,6 +222,12 @@ def process_bloginfo_request():
         strtemp2 = f"글자수: {total_len} 이미지: {img_len} 키워드: {keyword}({num_of_keyword})=({count_with_spaces})+({count_without_spaces})"
 
         str_temp3 = ""
+        str_temp4 = ""
+
+        for word, count in sorted_dict[:10]:
+            print(f"word: {word} count: {count}")
+            str_temp4 += f'{word}({count}회) '
+
         # sorted_dict를 순회하면서 검색어와 일치하는 단어가 있는 경우 빈도수 출력
         for word, count in sorted_dict:
             print(f"word: {word} count: {count} keyword_nouns: {keyword_nouns}")
@@ -273,7 +279,7 @@ def process_bloginfo_request():
     for item in top_10:
         print(item)
 
-    output_string = ', '.join([item[0]+"("+item[1]+")" for item in top_10])
+    output_string = ', '.join([item[0] for item in top_10])
 
     # 생성된 문자열 출력
     print("참고 키워드", output_string)
@@ -303,7 +309,7 @@ def process_bloginfo_request():
     print(f"output_string: {output_string}")
 
     # JSON 형식으로 응답합니다.
-    response_data = {'keyword': keyword, 'data': ret_list, 'output_string': output_string}
+    response_data = {'keyword': keyword, 'data': ret_list, 'output_string': str_temp4}
     return jsonify(response_data)
 
 
