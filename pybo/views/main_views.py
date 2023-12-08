@@ -1,7 +1,18 @@
+import datetime
+
 from flask import Blueprint, request
 
 import requests
 import xml.etree.ElementTree as ET
+
+def getToDay():
+    return datetime.datetime.today().strftime("%Y%m%d")
+
+
+def getNowTime():
+    return datetime.datetime.today().strftime("%Y.%m.%d %H시%M분")
+
+
 
 bp = Blueprint('main', __name__, url_prefix='/')
 
@@ -31,10 +42,29 @@ def process_bloginfo_request():
     aaa_param = request.form.get('aaa', '')
     print(f"aaa_param: {aaa_param}")
 
-    ret3 = getNVisitor(aaa_param)
+    num_of_day = 0
+    total_visitor = 0
+    avg_visitor = 0
+
+    visitor_xtree = getNVisitor(aaa_param)
+    for node in visitor_xtree.findall('visitorcnt'):
+        visitor_day = node.get('id')
+
+        if getToDay() != visitor_day:
+            visitor = node.get('cnt')
+            print(f"visitor_day: {visitor_day}: visitor: {visitor}")
+            total_visitor += int(visitor)
+            num_of_day += 1
+
+    print(f"num_of_day: {num_of_day}")
+    print(f"total_visitor: {total_visitor}")
+    avg_visitor = int(total_visitor / num_of_day)
+    print(f"avg_visitor: {avg_visitor}")
+
+
 
     # 받아온 문자열에 "응답"을 붙여 응답으로 반환합니다.
-    response_text = aaa_param + '응답-' + ret3
+    response_text = aaa_param + '응답-' + total_visitor + "/" + num_of_day + "/" + avg_visitor
 
     return response_text
 
