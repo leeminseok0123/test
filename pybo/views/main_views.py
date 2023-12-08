@@ -49,9 +49,12 @@ def index():
 def process_bloginfo_request():
     # HTTP POST 요청에서 'aaa' 파라미터를 받아옵니다.
     keyword = request.form.get('keyword', '')
-    print(f"keyword: {keyword}")
+    num_of_post = request.form.get('num_of_post', '')
 
-    keyword = "개인회생"
+    print(f"keyword: {keyword}")
+    print(f"num_of_post: {num_of_post}")
+    
+    #keyword = "개인회생"
 
     okt = Okt()
     INCLUDE = ["Noun", "URL", "Alpha", "Number"]
@@ -65,7 +68,7 @@ def process_bloginfo_request():
     bs = BeautifulSoup(r.text, "lxml")
     lis = bs.select("ul.lst_view > li.bx")
 
-    num_of_post = 3
+    #num_of_post = 3
 
     legend = []
     final_sorted_dict = []
