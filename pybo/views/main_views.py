@@ -273,7 +273,7 @@ def process_bloginfo_request():
     for item in top_10:
         print(item)
 
-    output_string = ', '.join([item[0] for item in top_10])
+    output_string = ', '.join([item[0]+"("+item[1]+")" for item in top_10])
 
     # 생성된 문자열 출력
     print("참고 키워드", output_string)
