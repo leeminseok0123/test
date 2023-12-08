@@ -53,7 +53,7 @@ def process_bloginfo_request():
 
     print(f"keyword: {keyword}")
     print(f"num_of_post: {num_of_post}")
-    
+
     #keyword = "개인회생"
 
     okt = Okt()
