@@ -65,7 +65,7 @@ def process_bloginfo_request():
     bs = BeautifulSoup(r.text, "lxml")
     lis = bs.select("ul.lst_view > li.bx")
 
-    num_of_post = 10
+    num_of_post = 3
 
     legend = []
     final_sorted_dict = []
