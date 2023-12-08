@@ -17,7 +17,7 @@ def index():
 def process_bloginfo_request():
     # HTTP POST 요청에서 'aaa' 파라미터를 받아옵니다.
     aaa_param = request.form.get('aaa', '')
-
+    print(f"aaa_param: {aaa_param}")
     # 받아온 문자열에 "응답"을 붙여 응답으로 반환합니다.
     response_text = aaa_param + '응답'
 
