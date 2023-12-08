@@ -1,6 +1,6 @@
 import datetime
 
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from bs4 import BeautifulSoup
 import requests
 import xml.etree.ElementTree as ET
@@ -61,7 +61,7 @@ def process_bloginfo_request():
     final_sorted_dict = []
 
     ret = ""
-
+    ret_list = []
     for idx_x, i in enumerate(lis):
 
         total_frequency = 0
@@ -84,12 +84,17 @@ def process_bloginfo_request():
         ret += link
         ret += ","
 
+        ret_list.append([user_info,post_day,link])
 
 
-    # 받아온 문자열에 "응답"을 붙여 응답으로 반환합니다.
-    response_text = aaa_param + '응답-' + ret
-
-    return response_text
+    # JSON 형식으로 응답합니다.
+    response_data = {'aaa_param': aaa_param, 'data': ret_list}
+    return jsonify(response_data)
+    # 
+    # # 받아온 문자열에 "응답"을 붙여 응답으로 반환합니다.
+    # response_text = aaa_param + '응답-' + ret_list
+    #
+    # return response_text
 
 
 
