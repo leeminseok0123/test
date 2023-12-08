@@ -257,7 +257,10 @@ def process_bloginfo_request():
                 plt.text(e, x, w, size=9, color="black", weight="normal", verticalalignment='bottom')
             plt.plot(xy, "--o")
 
-        ret_list.append([idx_x + 1, post_url, uid, logNo, total_len, img_len, title, pub_date, total_frequency, avg_visitor, str_temp, strtemp2, str_temp3, str_temp4])
+        #ret_list.append([idx_x + 1, post_url, uid, logNo, total_len, img_len, title, pub_date, total_frequency, avg_visitor, str_temp, strtemp2, str_temp3, str_temp4])
+        ret_list.append(
+            [idx_x + 1, title, pub_date, total_frequency, avg_visitor, total_len, num_of_keyword, img_len, str_temp4, post_url, uid, logNo, total_len, img_len, title, pub_date, total_frequency, avg_visitor,
+             str_temp, strtemp2, str_temp3, str_temp4])
 
 
     # 첫 번째 요소를 기준으로 반복 횟수를 더함
