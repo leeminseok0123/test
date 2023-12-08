@@ -13,7 +13,7 @@ def index():
     return 'Pybo index 2'
 
 
-@bp.route('/bloginfo', methods=['GET'])
+@bp.route('/bloginfo', methods=['GET', 'POST'])
 def process_bloginfo_request():
     # HTTP GET 요청에서 'aaa' 파라미터를 받아옵니다.
     aaa_param = request.args.get('aaa', '')
