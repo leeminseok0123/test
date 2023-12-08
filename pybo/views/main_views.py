@@ -47,7 +47,7 @@ def process_bloginfo_request():
     headers = {'User-Agent': (
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36(KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36')}
 
-    keyword = "개인회생"
+    keyword = aaa_param
     url = f"https://search.naver.com/search.naver?query={keyword}&nso=&where=blog&sm=tab_opt"
     r = requests.get(url, headers=headers)
     print(r.text)
@@ -82,8 +82,8 @@ def process_bloginfo_request():
         ret += post_day
         ret += "/"
         ret += link
+        ret += ","
 
-        break
 
 
     # 받아온 문자열에 "응답"을 붙여 응답으로 반환합니다.
