@@ -15,13 +15,14 @@ def index():
 
 @bp.route('/bloginfo', methods=['GET', 'POST'])
 def process_bloginfo_request():
-    # HTTP GET 요청에서 'aaa' 파라미터를 받아옵니다.
-    aaa_param = request.args.get('aaa', '')
+    # HTTP POST 요청에서 'aaa' 파라미터를 받아옵니다.
+    aaa_param = request.form.get('aaa', '')
 
     # 받아온 문자열에 "응답"을 붙여 응답으로 반환합니다.
     response_text = aaa_param + '응답'
 
     return response_text
+
 
 
 @bp.route('/test')
