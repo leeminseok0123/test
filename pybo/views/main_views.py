@@ -5,12 +5,12 @@ bp = Blueprint('main', __name__, url_prefix='/')
 
 @bp.route('/hello')
 def hello_pybo():
-    return 'Hello, Pybo!'
+    return 'Hello, Pybo! 2'
 
 
 @bp.route('/')
 def index():
-    return 'Pybo index'
+    return 'Pybo index 2'
 
 
 @bp.route('/test')
