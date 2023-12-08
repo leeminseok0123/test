@@ -40,9 +40,12 @@ def index():
 
 @bp.route('/bloginfo', methods=['GET', 'POST'])
 def process_bloginfo_request():
-    # HTTP POST 요청에서 'aaa' 파라미터를 받아옵니다.
-    aaa_param = request.form.get('aaa', '')
-    print(f"aaa_param: {aaa_param}")
+    if request.method == 'GET':
+        # GET 요청 처리
+        aaa_param = request.args.get('aaa', '')
+    elif request.method == 'POST':
+        # POST 요청 처리
+        aaa_param = request.form.get('aaa', '')
 
     headers = {'User-Agent': (
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36(KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36')}
@@ -50,52 +53,23 @@ def process_bloginfo_request():
     keyword = aaa_param
     url = f"https://search.naver.com/search.naver?query={keyword}&nso=&where=blog&sm=tab_opt"
     r = requests.get(url, headers=headers)
-    print(r.text)
     bs = BeautifulSoup(r.text, "lxml")
     lis = bs.select("ul.lst_view > li.bx")
 
     num_of_post = 10
 
-    legend = []
-
-    final_sorted_dict = []
-
-    ret = ""
     ret_list = []
     for idx_x, i in enumerate(lis):
-
-        total_frequency = 0
-
         if idx_x > (num_of_post - 1):
             break
         user_info = i.select_one("div.user_info > a").get_text().strip()
-        print(f"user_info: {user_info}")
-
         post_day = i.select_one("div.user_info > span.sub").get_text().strip()
-        print(f"post_day: {post_day}")
-
         link = i.select_one("a.dsc_link").get("href")
-        print(f"link: {link}")
-
-        ret += user_info
-        ret += "/"
-        ret += post_day
-        ret += "/"
-        ret += link
-        ret += ","
-
-        ret_list.append([user_info,post_day,link])
-
+        ret_list.append({'user_info': user_info, 'post_day': post_day, 'link': link})
 
     # JSON 형식으로 응답합니다.
     response_data = {'aaa_param': aaa_param, 'data': ret_list}
     return jsonify(response_data)
-    # 
-    # # 받아온 문자열에 "응답"을 붙여 응답으로 반환합니다.
-    # response_text = aaa_param + '응답-' + ret_list
-    #
-    # return response_text
-
 
 
 @bp.route('/test')
