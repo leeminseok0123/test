@@ -18,6 +18,8 @@ bp = Blueprint('main', __name__, url_prefix='/')
 
 def getNVisitor(naver_id):
 
+    print(f"naver_id: {naver_id}")
+
     headers = {'User-Agent': 'Mozilla/5.0'}
     res = requests.get("https://blog.naver.com/NVisitorgp4Ajax.nhn?blogId=" + naver_id, headers=headers, timeout=5)
     print("#########################################")
