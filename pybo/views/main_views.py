@@ -1,6 +1,18 @@
 from flask import Blueprint, request
 
+import requests
+import xml.etree.ElementTree as ET
+
 bp = Blueprint('main', __name__, url_prefix='/')
+
+def getNVisitor(naver_id):
+
+    headers = {'User-Agent': 'Mozilla/5.0'}
+    res = requests.get("https://blog.naver.com/NVisitorgp4Ajax.nhn?blogId=" + naver_id, headers=headers, timeout=5)
+    print("#########################################")
+    print(res.text)
+    print("#########################################")
+    return ET.fromstring(res.text)
 
 
 @bp.route('/hello')
@@ -18,8 +30,11 @@ def process_bloginfo_request():
     # HTTP POST 요청에서 'aaa' 파라미터를 받아옵니다.
     aaa_param = request.form.get('aaa', '')
     print(f"aaa_param: {aaa_param}")
+
+    ret3 = getNVisitor(aaa_param)
+
     # 받아온 문자열에 "응답"을 붙여 응답으로 반환합니다.
-    response_text = aaa_param + '응답'
+    response_text = aaa_param + '응답-' + ret3
 
     return response_text
 
