@@ -257,7 +257,7 @@ def process_bloginfo_request():
                 plt.text(e, x, w, size=9, color="black", weight="normal", verticalalignment='bottom')
             plt.plot(xy, "--o")
 
-        ret_list.append([idx_x + 1, post_url, uid, logNo, total_len, img_len, title, pub_date, total_frequency, avg_visitor, str_temp, strtemp2, str_temp3])
+        ret_list.append([idx_x + 1, post_url, uid, logNo, total_len, img_len, title, pub_date, total_frequency, avg_visitor, str_temp, strtemp2, str_temp3, str_temp4])
 
 
     # 첫 번째 요소를 기준으로 반복 횟수를 더함
@@ -309,7 +309,7 @@ def process_bloginfo_request():
     print(f"output_string: {output_string}")
 
     # JSON 형식으로 응답합니다.
-    response_data = {'keyword': keyword, 'data': ret_list, 'output_string': str_temp4}
+    response_data = {'keyword': keyword, 'data': ret_list, 'output_string': output_string}
     return jsonify(response_data)
 
 
