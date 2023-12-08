@@ -75,7 +75,62 @@ def process_bloginfo_request():
         link = i.select_one("a.dsc_link").get("href")
         print(f"link: {link}")
 
-        ret_list.append([user_info,post_day,link])
+        thumb_link = i.select_one("a.thumb_link")
+        if thumb_link is not None:
+            thumb = thumb_link.get("href")
+            print(f"thumb: {thumb}")
+        thumb_link = ""
+
+        temp = thumb.split("https://blog.naver.com/")[1]
+        uid = temp.split("/")[0]
+        logNo = temp.split("/")[1]
+        print(f"uid:{uid} logNo:{logNo}")
+
+
+        print("방문자수")
+        num_of_day = 0
+        total_visitor = 0
+        avg_visitor = 0
+
+        visitor_xtree = getNVisitor(uid)
+        for node in visitor_xtree.findall('visitorcnt'):
+            visitor_day = node.get('id')
+
+            if getToDay() != visitor_day:
+                visitor = node.get('cnt')
+                print(f"visitor_day: {visitor_day}: visitor: {visitor}")
+                total_visitor += int(visitor)
+                num_of_day += 1
+
+        print(f"num_of_day: {num_of_day}")
+        print(f"total_visitor: {total_visitor}")
+        avg_visitor = int(total_visitor/num_of_day)
+        print(f"avg_visitor: {avg_visitor}")
+
+        post_url = f"https://blog.naver.com/PostView.naver?blogId={uid}&logNo={logNo}"
+        r = requests.get(post_url, headers=headers)
+        print(r.text)
+
+        bs = BeautifulSoup(r.text, "lxml")
+        #title = bs.select_one("div.pcol1 > div > p > span").text
+        title = bs.select_one("div.pcol1 > div").text
+        pub_date = bs.select_one("div.blog2_container > span.se_publishDate").text
+
+        main_container = bs.select_one("div.se-main-container")
+        if main_container is None:
+            contents = bs.select_one("div.se_component_wrap.sect_dsc.__se_component_area").text.replace("\n", "")
+            images = bs.select("div.se_component.se_image")
+
+        else:
+            contents = main_container.text.replace("\n", "")
+            images = main_container.select("img")
+
+        #contents = bs.select_one("div.se-main-container").text.replace("\n", "")
+        #images = bs.select_one("div.se-main-container").select("img")
+        total_len = len(contents)
+        img_len = len(images)
+
+        ret_list.append([idx_x+1, post_url, uid, logNo, total_len, img_len, title, pub_date])
 
     # JSON 형식으로 응답합니다.
     response_data = {'keyword': keyword, 'data': ret_list}
