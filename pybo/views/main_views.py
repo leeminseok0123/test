@@ -1,7 +1,7 @@
 import datetime
 
 from flask import Blueprint, request
-
+from bs4 import BeautifulSoup
 import requests
 import xml.etree.ElementTree as ET
 
@@ -44,29 +44,50 @@ def process_bloginfo_request():
     aaa_param = request.form.get('aaa', '')
     print(f"aaa_param: {aaa_param}")
 
-    num_of_day = 0
-    total_visitor = 0
-    avg_visitor = 0
+    headers = {'User-Agent': (
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36(KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36')}
 
-    visitor_xtree = getNVisitor(aaa_param)
-    for node in visitor_xtree.findall('visitorcnt'):
-        visitor_day = node.get('id')
+    keyword = "개인회생"
+    url = f"https://search.naver.com/search.naver?query={keyword}&nso=&where=blog&sm=tab_opt"
+    r = requests.get(url, headers=headers)
+    print(r.text)
+    bs = BeautifulSoup(r.text, "lxml")
+    lis = bs.select("ul.lst_view > li.bx")
 
-        if getToDay() != visitor_day:
-            visitor = node.get('cnt')
-            print(f"visitor_day: {visitor_day}: visitor: {visitor}")
-            total_visitor += int(visitor)
-            num_of_day += 1
+    num_of_post = 10
 
-    print(f"num_of_day: {num_of_day}")
-    print(f"total_visitor: {total_visitor}")
-    avg_visitor = int(total_visitor / num_of_day)
-    print(f"avg_visitor: {avg_visitor}")
+    legend = []
 
+    final_sorted_dict = []
+
+    ret = ""
+
+    for idx_x, i in enumerate(lis):
+
+        total_frequency = 0
+
+        if idx_x > (num_of_post - 1):
+            break
+        user_info = i.select_one("div.user_info > a").get_text().strip()
+        print(f"user_info: {user_info}")
+
+        post_day = i.select_one("div.user_info > span.sub").get_text().strip()
+        print(f"post_day: {post_day}")
+
+        link = i.select_one("a.dsc_link").get("href")
+        print(f"link: {link}")
+
+        ret += user_info
+        ret += "/"
+        ret += post_day
+        ret += "/"
+        ret += link
+
+        break
 
 
     # 받아온 문자열에 "응답"을 붙여 응답으로 반환합니다.
-    response_text = aaa_param + '응답-' + total_visitor + "/" + num_of_day + "/" + avg_visitor
+    response_text = aaa_param + '응답-' + ret
 
     return response_text
 
